@@ -45,6 +45,8 @@ public class UserService {
         user.setPassword(userReq.getPassword());
         user.setFullName(userReq.getFullName());
         user.setRole(userReq.getRole());
+        user.setPhone(userReq.getPhone());
+        user.setAddress(userReq.getAddress());
 
         return userRepository.save(user);
     }

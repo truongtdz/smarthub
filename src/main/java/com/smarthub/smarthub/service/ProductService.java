@@ -37,13 +37,14 @@ public class ProductService {
         product.setCategoryId(req.getCategoryId());
         product.setDescription(req.getDescription());
         product.setScreenSize(req.getScreenSize());
-        product.setScreenType(req.getScreenType());
         product.setRam(req.getRam());
         product.setBattery(req.getBattery());
-        product.setChipset(req.getChipset());
         product.setStorage(req.getStorage());
         product.setImageUrl(req.getImageUrl());
         product.setStock(req.getStock());
+        product.setOriginalPrice(req.getOriginalPrice());
+        product.setPrice(req.getPrice());
+        product.setDiscount(req.getDiscount());
 
         return productRepository.save(product);
     }

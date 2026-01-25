@@ -19,15 +19,16 @@ public class Product {
     @Column(name = "category_id", nullable = false)
     private Long categoryId;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
     private String screenSize;
-    private String screenType;
     private Integer ram;
     private Integer battery;
-    private String chipset;
     private Integer storage;
     private String imageUrl;
     private Long stock;
+    private Long originalPrice;
+    private Long price;
+    private Long discount;
 }

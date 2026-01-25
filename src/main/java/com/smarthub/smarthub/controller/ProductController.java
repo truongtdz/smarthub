@@ -1,5 +1,6 @@
 package com.smarthub.smarthub.controller;
 
+import com.smarthub.smarthub.domain.Category;
 import com.smarthub.smarthub.domain.Product;
 import com.smarthub.smarthub.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,11 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAll() {
         return ResponseEntity.ok(productService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getById(id));
     }
 
     @PostMapping

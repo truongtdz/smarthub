@@ -17,5 +17,6 @@ public class Category {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
 }
