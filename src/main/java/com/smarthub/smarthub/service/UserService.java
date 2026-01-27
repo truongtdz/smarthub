@@ -16,7 +16,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public List<Users> getAllUsers() {
-        return userRepository.findAll();
+        List<Users> result = userRepository.findAll();
+
+        return result.stream().filter(item -> !"ADMIN".equals(item.getFullName())).toList();
     }
 
     public Users getUserById(Long id) {

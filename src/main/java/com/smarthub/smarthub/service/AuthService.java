@@ -16,7 +16,7 @@ public class AuthService {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new AppException("Email đã tồn tại");
         }
-        user.setRole("ADMIN");
+        user.setRole("USER");
         return userRepository.save(user);
     }
 

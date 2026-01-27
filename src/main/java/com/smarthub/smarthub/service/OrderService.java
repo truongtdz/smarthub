@@ -1,48 +1,65 @@
 package com.smarthub.smarthub.service;
 
+import com.smarthub.smarthub.config.exception.AppException;
 import com.smarthub.smarthub.domain.Order;
 import com.smarthub.smarthub.domain.OrderItem;
 import com.smarthub.smarthub.domain.Product;
+import com.smarthub.smarthub.domain.Users;
 import com.smarthub.smarthub.repository.OrderRepository;
 import com.smarthub.smarthub.repository.ProductRepository;
+import com.smarthub.smarthub.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void createOrder(Order order) {
         double total = 0;
 
         for (OrderItem item : order.getOrderItems()) {
-            Product product = productRepository.findById(item.getProduct().getId()).get();
+            Product product = productRepository.findById(item.getProduct().getId())
+                    .orElseThrow(() -> new AppException("Không tìm thấy sản phẩm"));
 
             item.setPrice(product.getPrice());
             item.setOrder(order);
             total += product.getPrice() * item.getQuantity();
 
+            if (product.getStock() - item.getQuantity() < 0) {
+                throw new AppException("Số lượng sản phẩm trong kho không đủ");
+            }
             product.setStock(product.getStock() - item.getQuantity());
             productRepository.save(product);
         }
 
         order.setTotalAmount(total);
+        order.setCreatedAt(LocalDateTime.now());
         orderRepository.save(order);
     }
 
     public List<Order> getUserOrders(Long userId) {
+        Optional<Users> users = userRepository.findById(userId);
+
+        if (users.isPresent()) {
+            if ("ADMIN".equals(users.get().getRole())) {
+                return orderRepository.findAll().stream()
+                        .sorted(Comparator.comparing(Order::getCreatedAt).reversed())
+                        .toList();
+            }
+        }
+
         return orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
