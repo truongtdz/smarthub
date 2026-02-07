@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "*")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -37,5 +35,14 @@ public class OrderController {
     public ResponseEntity<Map<String, Object>> getStatistics() {
         Map<String, Object> stats = orderService.getStatistics();
         return ResponseEntity.ok(stats);
+    }
+
+    @PostMapping("/update-status")
+    public ResponseEntity<?> updateStatusPayment(
+            @RequestParam("orderId") String orderId,
+            @RequestParam("status") Integer status
+    ) {
+        orderService.updateStatusPayment(Long.parseLong(orderId), status);
+        return ResponseEntity.ok("");
     }
 }

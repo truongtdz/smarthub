@@ -1,6 +1,7 @@
 package com.smarthub.smarthub.service;
 
 import com.smarthub.smarthub.config.vnpay.VNPayConfig;
+import com.smarthub.smarthub.domain.Order;
 import com.smarthub.smarthub.domain.dto.PaymentDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +18,14 @@ public class PaymentService {
 
     private final VNPayConfig vnPayConfig;
 
-    public PaymentDTO createVnPayPayment(HttpServletRequest request, long amount, String orderInfo, String orderId) {
+    public PaymentDTO createVnPayPayment(HttpServletRequest request, long amount, Long orderId) {
         try {
             String vnp_Version = vnPayConfig.getVnpVersion();
             String vnp_Command = vnPayConfig.getVnpCommand();
             String vnp_TmnCode = vnPayConfig.getVnpTmnCode();
-            String vnp_OrderInfo = orderInfo;
+            String vnp_OrderInfo = "vnp_OrderInfo";
             String orderType = vnPayConfig.getOrderType();
-            String vnp_TxnRef = orderId;
+            String vnp_TxnRef = orderId.toString();
             String vnp_IpAddr = getIpAddress(request);
             String vnp_ReturnUrl = vnPayConfig.getVnpReturnUrl();
 

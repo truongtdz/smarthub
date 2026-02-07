@@ -23,12 +23,9 @@ public class PaymentController {
     public ResponseEntity<PaymentDTO> createPayment(
             HttpServletRequest request,
             @RequestParam("amount") long amount,
-            @RequestParam("orderInfo") String orderInfo) {
+            @RequestParam("orderId") Long orderId) {
 
-        // Generate unique order ID
-        String orderId = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
-
-        PaymentDTO paymentDTO = paymentService.createVnPayPayment(request, amount, orderInfo, orderId);
+        PaymentDTO paymentDTO = paymentService.createVnPayPayment(request, amount, orderId);
         return ResponseEntity.status(HttpStatus.OK).body(paymentDTO);
     }
 

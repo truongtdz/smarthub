@@ -118,4 +118,13 @@ public class OrderService {
 
         return stats;
     }
+
+    public void updateStatusPayment(Long orderId, Integer status) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new AppException("Không tìm thấy đơn hàng"));
+
+        order.setStatus(status);
+
+        orderRepository.save(order);
+    }
 }
