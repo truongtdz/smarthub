@@ -24,9 +24,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Transactional
-    public void createOrder(Order order) {
+    public String createOrder(Order order) {
         double total = 0;
 
         for (OrderItem item : order.getOrderItems()) {
@@ -46,7 +47,22 @@ public class OrderService {
 
         order.setTotalAmount(total);
         order.setCreatedAt(LocalDateTime.now());
-        orderRepository.save(order);
+        order = orderRepository.save(order);
+
+        Users users = userRepository.findById(order.getUserId())
+                .orElseThrow(() -> new AppException("Người dùng không tồn tại!"));
+
+        String message = "";
+
+        try {
+            String content = "Bạn đã đặt đơn hàng #" + order.getId() + " thành công";
+            emailService.sendEmail(users.getEmail(), content);
+            message = "Gửi email thành công";
+        } catch (Exception e) {
+            message = "Gửi email không thành công";
+        }
+
+        return message;
     }
 
     public List<Order> getUserOrders(Long userId) {

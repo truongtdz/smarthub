@@ -16,9 +16,8 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping()
-    public ResponseEntity<Void> createOrder(@RequestBody Order order) {
-        orderService.createOrder(order);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> createOrder(@RequestBody Order order) {
+        return ResponseEntity.ok(orderService.createOrder(order));
     }
 
     @GetMapping("/user/{userId}")
