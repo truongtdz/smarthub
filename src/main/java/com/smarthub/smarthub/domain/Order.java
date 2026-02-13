@@ -29,4 +29,6 @@ public class Order {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private Integer status;
+
+    private Integer isConfirm;
 }

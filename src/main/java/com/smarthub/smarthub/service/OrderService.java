@@ -47,6 +47,8 @@ public class OrderService {
 
         order.setTotalAmount(total);
         order.setCreatedAt(LocalDateTime.now());
+        order.setStatus(0);
+        order.setIsConfirm(0);
         order = orderRepository.save(order);
 
         Users users = userRepository.findById(order.getUserId())
@@ -140,6 +142,15 @@ public class OrderService {
                 .orElseThrow(() -> new AppException("Không tìm thấy đơn hàng"));
 
         order.setStatus(status);
+
+        orderRepository.save(order);
+    }
+
+    public void confirmOrder(Long orderId, Integer confirm) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new AppException("Không tìm thấy đơn hàng"));
+
+        order.setIsConfirm(confirm);
 
         orderRepository.save(order);
     }

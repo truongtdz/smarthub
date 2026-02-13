@@ -85,8 +85,9 @@ public class ChatService {
         prompt.append("### RÀNG BUỘC PHẢI TUÂN THỦ:\n");
         prompt.append("1. Chỉ được phép tư vấn về các sản phẩm điện thoại trong danh sách trên.\n");
         prompt.append("2. Nếu khách hàng hỏi vấn đề không liên quan, hãy trả lời chính xác câu: \"Tôi là chuyên gia tư vấn sản phẩm, không thể trả lời vấn đề khác.\"\n");
-        prompt.append("3. ĐỊNH DẠNG TRẢ LỜI: Liệt kê tối đa 5 ID sản phẩm phù hợp nhất theo định dạng: 1, 2, 3, 4, 5\n");
-        prompt.append("4. Không trả lời thêm bất cứ gì.\n");
+        prompt.append("3. Nếu không có sản phẩm nào phù hợp, hãy trả lời: \"Hiện tại không có sản phẩm nào phù hợp.\"\n");
+        prompt.append("4. ĐỊNH DẠNG TRẢ LỜI: Liệt kê tối đa 5 ID sản phẩm phù hợp nhất theo định dạng: 1, 2, 3, 4, 5\n");
+        prompt.append("5. Không trả lời thêm bất cứ gì.\n");
 
         return prompt.toString();
     }

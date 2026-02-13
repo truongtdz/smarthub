@@ -16,8 +16,8 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping()
-    public ResponseEntity<String> createOrder(@RequestBody Order order) {
-        return ResponseEntity.ok(orderService.createOrder(order));
+    public ResponseEntity<?> createOrder(@RequestBody Order order) {
+        return ResponseEntity.ok(Map.of("message", orderService.createOrder(order)));
     }
 
     @GetMapping("/user/{userId}")
@@ -42,6 +42,15 @@ public class OrderController {
             @RequestParam("status") Integer status
     ) {
         orderService.updateStatusPayment(Long.parseLong(orderId), status);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmOrder(
+            @RequestParam("orderId") String orderId,
+            @RequestParam("confirm") Integer confirm
+    ) {
+        orderService.confirmOrder(Long.parseLong(orderId), confirm);
         return ResponseEntity.ok("");
     }
 }
